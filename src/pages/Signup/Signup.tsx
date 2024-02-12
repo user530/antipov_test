@@ -6,7 +6,8 @@ export const Signup: React.FC = () => {
 
     return (
         <div className={styles['wrapper']}>
-            <Form formName='Регистрация' />
+            <Form formName='Регистрация' btnText='Зарегистрироваться' />
+            {/* <Form formName='Авторизация' btnText='Войти' /> */}
         </div>
     )
 }
