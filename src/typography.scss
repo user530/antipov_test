@@ -1,0 +1,25 @@
+@use 'common' as common;
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+.h1 {
+    font-size: common.remy(64);
+    font-weight: 400;
+    line-height: 1.67;
+    color: common.$white;
+}
+
+.h2 {
+    font-size: common.remy(20);
+    font-weight: 400;
+    line-height: 1.15;
+}
+
+.text {
+    font-size: common.remy(16);
+    line-height: 1.36;
+}
+
+.text-small {
+    font-size: common.remy(14);
+    line-height: 1.14;
+}
