@@ -1,0 +1,23 @@
+@use '../../common' as common;
+@use '../../typography' as typography;
+
+.form__wrapper {
+    width: 100%;
+    max-width: common.remy(500);
+    padding: common.remy(16);
+    border-radius: common.remy(16);
+    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.08);
+    background: rgb(255, 255, 255);
+}
+
+.form__heading {
+    margin-bottom: 16px;
+}
+
+.form__heading-title {
+    @extend .h2;
+}
+
+.form__body {}
+
+.form__footer {}
