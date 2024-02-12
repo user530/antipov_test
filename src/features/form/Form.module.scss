@@ -11,13 +11,26 @@
 }
 
 .form__heading {
-    margin-bottom: 16px;
+    margin-bottom: common.remy(16);
 }
 
 .form__heading-title {
     @extend .h2;
 }
 
-.form__body {}
+.form__body {
+    margin-bottom: common.remy(24);
+}
 
 .form__footer {}
+
+.button {
+    display: inline-block;
+    width: 100%;
+    height: common.remy(48);
+    font-size: common.remy(16);
+    line-height: common.remy(48);
+    border-radius: 8px;
+    background: rgb(81, 38, 137);
+    color: common.$white;
+}
