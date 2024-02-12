@@ -1,0 +1,41 @@
+@use '../../../common' as common;
+@use '../../../typography';
+
+.form-item {
+    margin-bottom: common.remy(16);
+}
+
+.form-item__label {
+    @extend .text;
+
+    display: block;
+    margin-bottom: common.remy(8);
+}
+
+.form-item__input {
+    display: block;
+    width: 100%;
+    height: common.remy(48);
+    padding-inline: common.remy(16) common.remy(8);
+    border: common.remy(1) solid transparent;
+    border-radius: common.remy(8);
+    background: rgb(248, 248, 248);
+
+    @extend .text-small;
+    color: common.$gray;
+
+    &::placeholder {
+        font-size: inherit;
+        font-family: inherit;
+    }
+}
+
+.form-item__input--error {
+    border-color: common.$red;
+}
+
+.form-item__error {
+    color: common.$red;
+    font-size: common.remy(10);
+    line-height: 1.2;
+}
