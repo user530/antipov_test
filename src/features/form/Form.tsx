@@ -1,30 +1,64 @@
-import React from 'react';
+import React, { ChangeEvent, FormEvent } from 'react';
 import styles from './Form.module.scss';
 import { FormItem } from './form-item/Form-item';
 
 interface IFormComponent {
     formName: string;
+    formFields: FormItemData[];
     btnText: string;
+    submitHandler: (e: FormEvent<HTMLFormElement>) => void;
+}
+
+interface FormItemData {
+    itemName: string;
+    itemType: 'text' | 'password';
+    itemLabel: string;
+    itemPlaceholder?: string;
+    itemValidation?: {
+        validationCb: (value: string) => boolean;
+        validationErr: string;
+    }
 }
 
 export const Form: React.FC<IFormComponent> = (props: IFormComponent) => {
-    const { formName, btnText } = props;
+    const { formName, btnText, formFields, submitHandler } = props;
+
+    const [formData, setFormData] = React.useState<any>({});
+
+    const handleChange = (fieldName: string, e: ChangeEvent<HTMLInputElement>) => {
+        setFormData(
+            (prev: any) => ({
+                ...prev,
+                [fieldName]: e.target.value,
+            })
+        )
+    }
+
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        submitHandler(e);
+    }
 
     return (
-        <form className={styles['form__wrapper']}>
+        <form className={styles['form__wrapper']} onSubmit={handleSubmit}>
             <div className={styles['form__heading']}>
                 <h2 className={styles['form__heading-title']}>{formName}</h2>
             </div>
 
             <div className={styles['form__body']}>
-                <FormItem itemLabel='Имя' itemPlaceholder='Ваше имя' />
-                <FormItem itemLabel='Электронная почта' itemPlaceholder='Ваш e-mail' />
-                <FormItem itemLabel='Пароль' itemType='password'
-                    errHandling={{
-                        validationCb: (val) => /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/.test(val),
-                        validationErr: 'Пароль должен быть не меньше 6 символов и включать одну цифру, одну заглавную и малую буквы, а также один спец символ!'
-                    }} />
-                <FormItem itemLabel='Подтвердите пароль' itemType='password' />
+                {
+                    formFields.map(
+                        ({ itemLabel, itemType, itemName, itemPlaceholder, itemValidation }, ind) => <FormItem
+                            key={ind}
+                            itemLabel={itemLabel}
+                            itemType={itemType}
+                            itemName={itemName}
+                            itemValue={formData[itemName] || ''}
+                            onChange={(e) => handleChange(itemName, e)}
+                            errHandling={itemValidation}
+                            itemPlaceholder={itemPlaceholder}
+                        />
+                    )}
             </div>
 
             <div className={styles['form__footer']}>
