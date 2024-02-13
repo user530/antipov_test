@@ -35,6 +35,8 @@
 }
 
 .form-item__error {
+    padding-top: common.remy(4);
+    display: block;
     color: common.$red;
     font-size: common.remy(10);
     line-height: 1.2;

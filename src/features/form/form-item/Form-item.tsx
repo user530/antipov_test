@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import styles from './Form-item.module.scss';
 
 interface IFormItem {
+    itemName: string;
+    itemType?: 'text' | 'password';
+    itemValue: string;
     itemLabel: string;
     itemPlaceholder?: string;
-    itemType?: 'text' | 'password';
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
     errHandling?: {
         validationCb: (value: string) => boolean;
         validationErr: string;
@@ -12,8 +15,10 @@ interface IFormItem {
 };
 
 export const FormItem: React.FC<IFormItem> = (props: IFormItem) => {
-    const { itemLabel, itemType, itemPlaceholder, errHandling } = props;
+    const { itemName, itemValue, itemLabel, itemType, itemPlaceholder, errHandling, onChange } = props;
     const [error, setError] = React.useState<boolean>(false);
+
+    console.log(`Form Item ${itemName} fired!`);
 
     return (
         <div className={styles['form-item']}>
@@ -24,7 +29,10 @@ export const FormItem: React.FC<IFormItem> = (props: IFormItem) => {
             <input
                 type={itemType ? itemType : 'text'}
                 className={`${styles['form-item__input']}${error ? ' ' + styles['form-item__input--error'] : ''}`}
-                placeholder={itemLabel ? itemPlaceholder : ''}
+                name={itemName}
+                value={itemValue}
+                placeholder={itemPlaceholder ? itemPlaceholder : ''}
+                onChange={(e) => onChange(e)}
                 onBlur={
                     errHandling
                         ? (e) => {
