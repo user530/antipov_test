@@ -63,6 +63,7 @@
 }
 
 .header-content {
+    width: 100%;
     text-align: center;
     color: common.$white;
 }
@@ -73,7 +74,7 @@
 }
 
 .header-text {
-    width: 100%;
+    margin: 0 auto;
 
     @extend .h2;
     max-width: 846px;
