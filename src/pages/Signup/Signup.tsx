@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Signup.module.scss';
 import { Form } from '../../features/form/Form';
+import { TestForm } from '../../features/test/FormTest';
 
 interface FormItemData {
     itemName: string;
@@ -46,7 +47,7 @@ export const Signup: React.FC = () => {
 
     return (
         <div className={styles['wrapper']}>
-            <Form
+            {/* <Form
                 formName='Регистрация'
                 btnText='Зарегистрироваться'
                 formFields={registerFormFields}
@@ -54,8 +55,19 @@ export const Signup: React.FC = () => {
                     console.log('SUBMIT FORM FIRED!');
                     const form = e.target as HTMLFormElement;
                     const data = new FormData(form);
-                }} />
-
+                }} /> */}
+            <TestForm
+                formName='Регистрация'
+                btnText='Зарегистрироваться'
+                formFields={registerFormFields}
+                submitHandler={(e) => {
+                    e.preventDefault();
+                    console.log('SUBMIT FORM FIRED!');
+                    const form = e.target as HTMLFormElement;
+                    const data = new FormData(form);
+                    console.log(Array.from(data))
+                }}
+            />
         </div>
     )
 }
