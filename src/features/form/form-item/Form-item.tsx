@@ -1,24 +1,40 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import styles from './Form-item.module.scss';
+import { useFormContext } from '../Form.context';
 
-interface IFormItem {
+export interface FormItemProps {
     itemName: string;
-    itemType?: 'text' | 'password';
-    itemValue: string;
     itemLabel: string;
     itemPlaceholder?: string;
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-    errHandling?: {
-        validationCb: (value: string) => boolean;
-        validationErr: string;
-    }
+    itemType?: string;
+    itemValidation?: (value: any) => string | null;
 };
 
-export const FormItem: React.FC<IFormItem> = (props: IFormItem) => {
-    const { itemName, itemValue, itemLabel, itemType, itemPlaceholder, errHandling, onChange } = props;
-    const [error, setError] = React.useState<boolean>(false);
+export const FormItem: React.FC<FormItemProps> = (props: FormItemProps) => {
+    const { itemName, itemLabel, itemPlaceholder, itemType, itemValidation } = props;
+    const { formValues, formErrors, handleChange, setFieldError, clearFieldError } = useFormContext();
 
-    console.log(`Form Item ${itemName} fired!`);
+    const itemValue = formValues[itemName];
+    const itemError = formErrors[itemName];
+
+    const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        handleChange(itemName, e.target.value);
+    };
+
+    const blurHandler = () => {
+        if (!itemValidation) return;
+
+        const validationError: string | null = itemValidation(itemValue);
+
+        if (!validationError)
+            clearFieldError(itemName);
+        else
+            setFieldError(itemName, validationError);
+    };
+
+    console.log(`${itemName}:`);
+    console.log(`Form Item value ${itemValue}`);
+    console.log(`Form Item error ${itemError}`);
 
     return (
         <div className={styles['form-item']}>
@@ -28,26 +44,17 @@ export const FormItem: React.FC<IFormItem> = (props: IFormItem) => {
 
             <input
                 type={itemType ? itemType : 'text'}
-                className={`${styles['form-item__input']}${error ? ' ' + styles['form-item__input--error'] : ''}`}
+                className={`${styles['form-item__input']}${itemError ? ' ' + styles['form-item__input--error'] : ''}`}
                 name={itemName}
                 value={itemValue}
                 placeholder={itemPlaceholder ? itemPlaceholder : ''}
-                onChange={(e) => onChange(e)}
-                onBlur={
-                    errHandling
-                        ? (e) => {
-                            const isValid = errHandling?.validationCb(e.target.value);
-                            setError(!isValid);
-                        }
-                        : () => { }
-                }
+                onChange={changeHandler}
+                onBlur={blurHandler}
             />
 
             {
-                error
-                    ? <span className={styles['form-item__error']}>
-                        {errHandling?.validationErr ? errHandling.validationErr : ''}
-                    </span>
+                itemError
+                    ? <span className={styles['form-item__error']}>{itemError}</span>
                     : null
             }
         </div>
