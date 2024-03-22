@@ -29,9 +29,11 @@ interface FormProviderProps {
 }
 
 export const FormProvider: React.FC<FormProviderProps> = ({ children, onSubmit, validateForm }) => {
-    console.log('FORM PROVIDER FIRED')
     // Prepare default object that stores all form input names with empty values
     const formItemsObj: { [key: string]: string } = {};
+
+    // Prepare a list of field validators
+    const formItemValidators: { [key: string]: (value: string) => string | null } = {};
 
     // Populate formItemsObj
     React.Children.forEach(children, (child) => {
@@ -42,6 +44,9 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children, onSubmit, 
         fieldProps.reduce(
             (defaultFieldObj, prop) => {
                 defaultFieldObj[prop.itemName] = '';
+                // Add a validation to the validation object
+                if (prop.itemValidation) formItemValidators[prop.itemName] = prop.itemValidation;
+
                 return defaultFieldObj
             },
             formItemsObj
@@ -52,6 +57,7 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children, onSubmit, 
     const [formValues, setFormValues] = React.useState<{ [key: string]: any }>(formItemsObj);
     const [formErrors, setFormErrors] = React.useState<{ [key: string]: string }>(formItemsObj);
 
+    // Still not sure if that useCallback will be effective here, so I left it for the time being
     const handleChange = (field: string, value: any) => {
         setFormValues(current => ({ ...current, [field]: value }));
     }
@@ -62,24 +68,43 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children, onSubmit, 
 
     const clearFieldError = (field: string) => {
         // Remove error associated with this field
-        if (formErrors[field])
-            setFormErrors(
-                (current) => {
-                    const newErrors = { ...current };
-                    delete newErrors[field];
-                    return newErrors;
-                }
-            );
+        if (!formErrors[field]) return;
+
+        setFormErrors(
+            (current) => {
+                const newErrors = { ...current };
+                delete newErrors[field];
+                return newErrors;
+            }
+        );
     }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
         let errors: { [key: string]: string } = {};
 
         // If form level validation is provided and there no active field errors -> validate whole form
-        if (validateForm
-            && Object.keys(formErrors).length === 0) {
-            errors = validateForm(formValues);
+        if (validateForm) {
+            // Check each field (catch instances when blur is not emmited)
+            Object.entries(formItemValidators).forEach(
+                ([field, validator]) => {
+                    const errMsg = validator(formValues[field]);
+                    if (errMsg)
+                        errors[field] = errMsg;
+                }
+            )
+
+            // If fields are ok -> check form level validator
+            const formErrors = validateForm(formValues);
+
+            // Add form level errors to the existing ones or set as only error 
+            Object.keys(formErrors).forEach(
+                error => errors[error]
+                    ? errors[error] += `\n ${formErrors[error]}`
+                    : errors[error] = formErrors[error]
+            )
+            console.log(errors);
             setFormErrors(errors);
         }
 
