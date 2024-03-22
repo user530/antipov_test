@@ -32,10 +32,6 @@ export const FormItem: React.FC<FormItemProps> = (props: FormItemProps) => {
             setFieldError(itemName, validationError);
     };
 
-    console.log(`${itemName}:`);
-    console.log(`Form Item value ${itemValue}`);
-    console.log(`Form Item error ${itemError}`);
-
     return (
         <div className={styles['form-item']}>
             <label className={styles['form-item__label']}>
