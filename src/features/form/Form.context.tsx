@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormItemProps } from './form-item/Form-item';
 
 interface IFormContext {
     formValues: { [key: string]: any };
@@ -6,6 +7,7 @@ interface IFormContext {
     handleChange: (field: string, value: any) => void;
     handleSubmit: (e: React.FormEvent) => void;
     setFieldError: (field: string, message: string) => void;
+    clearFieldError: (field: string) => void;
 }
 
 // Prepare context
@@ -27,12 +29,38 @@ interface FormProviderProps {
 }
 
 export const FormProvider: React.FC<FormProviderProps> = ({ children, onSubmit, validateForm }) => {
-    const [formValues, setFormValues] = React.useState<{ [key: string]: any }>({});
-    const [formErrors, setFormErrors] = React.useState<{ [key: string]: string }>({});
+    console.log('FORM PROVIDER FIRED')
+    // Prepare default object that stores all form input names with empty values
+    const formItemsObj: { [key: string]: string } = {};
+
+    // Populate formItemsObj
+    React.Children.forEach(children, (child) => {
+        if (!React.isValidElement(child)) return [];
+
+        const fieldProps: FormItemProps[] = child.props?.formFields;
+
+        fieldProps.reduce(
+            (defaultFieldObj, prop) => {
+                defaultFieldObj[prop.itemName] = '';
+                return defaultFieldObj
+            },
+            formItemsObj
+        )
+    })
+
+    // Form values and errors
+    const [formValues, setFormValues] = React.useState<{ [key: string]: any }>(formItemsObj);
+    const [formErrors, setFormErrors] = React.useState<{ [key: string]: string }>(formItemsObj);
 
     const handleChange = (field: string, value: any) => {
         setFormValues(current => ({ ...current, [field]: value }));
+    }
 
+    const setFieldError = (field: string, message: string) => {
+        setFormErrors(current => ({ ...current, [field]: message }));
+    }
+
+    const clearFieldError = (field: string) => {
         // Remove error associated with this field
         if (formErrors[field])
             setFormErrors(
@@ -44,16 +72,13 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children, onSubmit, 
             );
     }
 
-    const setFieldError = (field: string, message: string) => {
-        setFormErrors(current => ({ ...current, [field]: message }));
-    }
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         let errors: { [key: string]: string } = {};
 
-        // If form level validation is provided -> validate whole form
-        if (validateForm) {
+        // If form level validation is provided and there no active field errors -> validate whole form
+        if (validateForm
+            && Object.keys(formErrors).length === 0) {
             errors = validateForm(formValues);
             setFormErrors(errors);
         }
@@ -70,6 +95,7 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children, onSubmit, 
             handleChange,
             handleSubmit,
             setFieldError,
+            clearFieldError
         }}>
             {children}
         </FormContext.Provider >)
