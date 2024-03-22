@@ -1,43 +1,22 @@
-import React, { ChangeEvent, FormEvent } from 'react';
+import React from 'react';
 import styles from './Form.module.scss';
-import { FormItem } from './form-item/Form-item';
+import { FormItem, FormItemProps } from './form-item/Form-item';
+import { FormProvider, useFormContext } from './Form.context';
 
-interface IFormComponent {
+interface FormContentProps {
     formName: string;
-    formFields: FormItemData[];
+    formFields: FormItemProps[];
     btnText: string;
-    submitHandler: (e: FormEvent<HTMLFormElement>) => void;
 }
 
-interface FormItemData {
-    itemName: string;
-    itemType: 'text' | 'password';
-    itemLabel: string;
-    itemPlaceholder?: string;
-    itemValidation?: {
-        validationCb: (value: string) => boolean;
-        validationErr: string;
-    }
+interface FormProps extends FormContentProps {
+    submitHandler: (values: { [key: string]: any }) => void;
+    validateForm: (values: { [key: string]: any }) => { [key: string]: string }
 }
 
-export const Form: React.FC<IFormComponent> = (props: IFormComponent) => {
-    const { formName, btnText, formFields, submitHandler } = props;
-
-    const [formData, setFormData] = React.useState<any>({});
-
-    const handleChange = (fieldName: string, e: ChangeEvent<HTMLInputElement>) => {
-        setFormData(
-            (prev: any) => ({
-                ...prev,
-                [fieldName]: e.target.value,
-            })
-        )
-    }
-
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        submitHandler(e);
-    }
+const FormContent: React.FC<FormContentProps> = (props: FormContentProps) => {
+    const { handleSubmit } = useFormContext();
+    const { btnText, formFields, formName } = props;
 
     return (
         <form className={styles['form__wrapper']} onSubmit={handleSubmit}>
@@ -48,22 +27,25 @@ export const Form: React.FC<IFormComponent> = (props: IFormComponent) => {
             <div className={styles['form__body']}>
                 {
                     formFields.map(
-                        ({ itemLabel, itemType, itemName, itemPlaceholder, itemValidation }, ind) => <FormItem
-                            key={ind}
-                            itemLabel={itemLabel}
-                            itemType={itemType}
-                            itemName={itemName}
-                            itemValue={formData[itemName] || ''}
-                            onChange={(e) => handleChange(itemName, e)}
-                            errHandling={itemValidation}
-                            itemPlaceholder={itemPlaceholder}
-                        />
-                    )}
+                        (fieldProps, ind) => <FormItem key={ind} {...fieldProps} />
+                    )
+                }
             </div>
 
             <div className={styles['form__footer']}>
                 <input className={styles['button']} type="submit" value={btnText} />
             </div>
         </form>
+    )
+
+}
+
+export const Form: React.FC<FormProps> = (props: FormProps) => {
+    const { submitHandler, validateForm, ...contentProps } = props;
+
+    return (
+        <FormProvider onSubmit={submitHandler} validateForm={validateForm}>
+            <FormContent {...contentProps} />
+        </FormProvider>
     );
 } 
