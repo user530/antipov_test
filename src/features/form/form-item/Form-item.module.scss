@@ -12,6 +12,29 @@
     margin-bottom: common.remy(8);
 }
 
+.form-item__input-wrapper {
+    position: relative;
+}
+
+.form-item__visibility {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & svg {
+        width: 20px;
+        height: 14px;
+        color: common.$gray;
+    }
+}
+
 .form-item__input {
     display: block;
     width: 100%;
