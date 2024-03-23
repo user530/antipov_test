@@ -1,7 +1,7 @@
 const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/;
 
-export const nameValidator = (value: string) => !(value.length > 0) ? 'Имя не должно быть пустым полем' : null;
+export const notemptyValidator = (value: string) => !(value.length > 0) ? 'Поле не должно быть пустым полем' : null;
 export const emailValidator = (value: string) => !emailRegex.test(value) ? 'Некорректный формат электронной почты' : null;
 export const passwordValidator = (value: string) => !passwordRegex.test(value)
     ? 'Пароль должен быть не меньше 6 символов и включать одну цифру, одну заглавную и малую буквы, а также один спец символ' : null;

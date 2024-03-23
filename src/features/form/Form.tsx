@@ -11,7 +11,7 @@ interface FormContentProps {
 
 interface FormProps extends FormContentProps {
     submitHandler: (values: { [key: string]: any }) => void;
-    validateForm: (values: { [key: string]: any }) => { [key: string]: string }
+    validateForm?: (values: { [key: string]: any }) => { [key: string]: string }
 }
 
 const FormContent: React.FC<FormContentProps> = (props: FormContentProps) => {

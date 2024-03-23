@@ -84,32 +84,31 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children, onSubmit, 
 
         let errors: { [key: string]: string } = {};
 
-        // If form level validation is provided and there no active field errors -> validate whole form
-        if (validateForm) {
-            // Check each field (catch instances when blur is not emmited)
-            Object.entries(formItemValidators).forEach(
-                ([field, validator]) => {
-                    const errMsg = validator(formValues[field]);
-                    if (errMsg)
-                        errors[field] = errMsg;
-                }
-            )
+        // Check each field (catch submit w/o blur)
+        Object.entries(formItemValidators).forEach(
+            ([field, validator]) => {
+                const errMsg = validator(formValues[field]);
+                if (errMsg)
+                    errors[field] = errMsg;
+            }
+        )
 
-            // If fields are ok -> check form level validator
+        // If form level validation is provided - validate whole form
+        if (validateForm) {
             const formErrors = validateForm(formValues);
 
-            // Add form level errors to the existing ones or set as only error 
+            // Add form level errors to the existing ones or set as initial error 
             Object.keys(formErrors).forEach(
                 error => errors[error]
-                    ? errors[error] += `\n ${formErrors[error]}`
+                    ? errors[error] += `\n${formErrors[error]}`
                     : errors[error] = formErrors[error]
             )
-            console.log(errors);
-            setFormErrors(errors);
         }
 
+        setFormErrors(errors);
+
         // Submit if no errors
-        if (Object.keys(formErrors).length === 0)
+        if (Object.keys(errors).length === 0)
             onSubmit(formValues);
     }
 
