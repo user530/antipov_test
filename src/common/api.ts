@@ -55,7 +55,7 @@ function makeFetcher() {
             });
 
             if (!response.ok)
-                throw new Error(`Fetch failed! Error ${response.status}: ${response.statusText}`);
+                throw new Error(`Fetch failed! Error ${response.status}. ${(await response.json()).error}`);
 
             const responseData = await response.json();
             const result = { success: true as const, data: responseData };

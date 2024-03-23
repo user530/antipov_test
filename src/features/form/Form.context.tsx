@@ -110,9 +110,12 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children, onSubmit, 
         // Submit if no errors
         if (Object.keys(errors).length === 0) {
             onSubmit(formValues)
+                // Handle errors during submit
                 .catch(
                     rej => {
-
+                        const lastItemKey = Object.keys(formItemsObj).at(-1);
+                        if (lastItemKey)
+                            setFieldError(lastItemKey, (rej as Error).message || 'Something went wrong!');
                     }
                 )
         }
