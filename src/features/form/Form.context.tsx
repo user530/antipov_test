@@ -24,7 +24,7 @@ export const useFormContext = () => {
 
 interface FormProviderProps {
     children: React.ReactNode;
-    onSubmit: (values: { [key: string]: any }) => void;
+    onSubmit: (values: { [key: string]: any }) => Promise<void>;
     validateForm?: (values: { [key: string]: any }) => { [key: string]: string };
 }
 
@@ -108,8 +108,15 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children, onSubmit, 
         setFormErrors(errors);
 
         // Submit if no errors
-        if (Object.keys(errors).length === 0)
-            onSubmit(formValues);
+        if (Object.keys(errors).length === 0) {
+            onSubmit(formValues)
+                .catch(
+                    rej => {
+
+                    }
+                )
+        }
+
     }
 
     return (

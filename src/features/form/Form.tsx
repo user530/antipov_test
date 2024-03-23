@@ -10,7 +10,7 @@ interface FormContentProps {
 }
 
 interface FormProps extends FormContentProps {
-    submitHandler: (values: { [key: string]: any }) => void;
+    submitHandler: (values: { [key: string]: any }) => Promise<void>;
     validateForm?: (values: { [key: string]: any }) => { [key: string]: string }
 }
 

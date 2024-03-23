@@ -7,6 +7,7 @@ import { submitRegistration, submitSignup } from '../../common/api';
 
 export const Signup: React.FC = () => {
 
+    // Commented out password validation for the regres
     const registerFormFields: FormItemProps[] = [
         {
             itemName: 'name',
@@ -25,13 +26,13 @@ export const Signup: React.FC = () => {
             itemName: 'password',
             itemLabel: 'Пароль',
             itemType: 'password',
-            itemValidation: passwordValidator,
+            // itemValidation: passwordValidator,
         },
         {
             itemName: 'password2',
             itemLabel: 'Подтвердите пароль',
             itemType: 'password',
-            itemValidation: passwordValidator,
+            // itemValidation: passwordValidator,
         },
     ]
 
@@ -59,13 +60,13 @@ export const Signup: React.FC = () => {
                 formFields={loginFormFields}
                 submitHandler={submitSignup}
             />
-            {/* <Form
+            <Form
                 formName='Регистрация'
                 btnText='Зарегистрироваться'
                 formFields={registerFormFields}
                 submitHandler={submitRegistration}
                 validateForm={formValidator}
-            /> */}
+            />
         </div>
     )
 }
