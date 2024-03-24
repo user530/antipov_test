@@ -4,11 +4,10 @@ import { Form } from '../../features/form/Form';
 import { FormItemProps } from '../../features/form/form-item/Form-item';
 import { notemptyValidator, emailValidator, passwordValidator, formValidator } from '../../common/validators';
 import { useFetch } from '../../features/form/useFetch';
-import { useLocation } from 'react-router-dom';
 
 export const Signup: React.FC = () => {
     const { submitRegistration, submitSignup } = useFetch();
-    const location = useLocation();
+
     const [currentMode, setCurrentMode] = React.useState<'register' | 'signup'>('signup');
 
     // Commented out password validation for the regres

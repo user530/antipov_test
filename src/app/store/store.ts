@@ -3,7 +3,7 @@ import { RootActionsType, rootReducer } from './reducers/root-reducer';
 
 export const store = configureStore({
   reducer: {
-    counter: rootReducer,
+    reducer: rootReducer,
   },
 });
 
