@@ -1,34 +1,6 @@
-export const submitRegistration = async (formData: { [key: string]: string }) => {
-    console.log('FORM - SUBMIT REGISTRATION FORM!');
-    console.log(formData);
-    const result = await fetcher('https://reqres.in/api/register', formData);
-
-    // Throw error for the form context to handle
-    if (!result.success)
-        throw new Error(result.error)
-
-    // SET LOGIN DATA?
-    console.log('SUBMIT RESULT'); console.log(result.data);
-}
-
-export const submitSignup = async (formData: { [key: string]: string }) => {
-    console.log('FORM - SUBMIT SIGNUP FORM!');
-    console.log(formData);
-    const result = await fetcher('https://reqres.in/api/login', formData);
-
-    // Throw error for the form context to handle
-    if (!result.success)
-        throw new Error(result.error)
-
-    // SET LOGIN DATA
-    console.log('SUBMIT RESULT'); console.log(result.data);
-}
-
-const fetcher = makeFetcher();
-
 type FetchResult = { success: true, data: any } | { success: false, error: string }
 
-function makeFetcher() {
+export function makeFetcher() {
     // Prepare closure data that will be used across all fetch calls 
     let abortController = new AbortController();
     const cache = new Map<string, FetchResult>();

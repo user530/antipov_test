@@ -3,9 +3,11 @@ import styles from './Signup.module.scss';
 import { Form } from '../../features/form/Form';
 import { FormItemProps } from '../../features/form/form-item/Form-item';
 import { notemptyValidator, emailValidator, passwordValidator, formValidator } from '../../common/validators';
-import { submitRegistration, submitSignup } from '../../common/api';
+import { useFetch } from '../../features/form/useFetch';
+// import { submitRegistration, submitSignup } from '../../common/api';
 
 export const Signup: React.FC = () => {
+    const { submitRegistration, submitSignup } = useFetch();
 
     // Commented out password validation for the regres
     const registerFormFields: FormItemProps[] = [
