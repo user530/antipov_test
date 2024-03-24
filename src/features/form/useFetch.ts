@@ -18,7 +18,8 @@ export const useFetch = () => {
 
             // SET LOGIN DATA?
             console.log('SUBMIT RESULT'); console.log(result.data);
-            navigate('/');
+            // Redirect back to the login screen
+            navigate(0);
         },
         [fetcher, navigate]
     );
@@ -35,6 +36,7 @@ export const useFetch = () => {
 
             // SET LOGIN DATA
             console.log('SUBMIT RESULT'); console.log(result.data);
+            // Move to the main content
             navigate('/catalogue');
         },
         [fetcher, navigate]
