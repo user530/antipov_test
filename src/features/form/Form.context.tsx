@@ -144,10 +144,12 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children, onSubmit, 
             setFieldError,
             clearFieldError
         }}>
+            {children}
+
             {
                 isLoading
                     ? <Loader />
-                    : <>{children}</>
+                    : null
             }
         </FormContext.Provider >)
 }
