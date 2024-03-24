@@ -60,13 +60,13 @@ export const Signup: React.FC = () => {
                 formFields={loginFormFields}
                 submitHandler={submitSignup}
             />
-            <Form
+            {/* <Form
                 formName='Регистрация'
                 btnText='Зарегистрироваться'
                 formFields={registerFormFields}
                 submitHandler={submitRegistration}
                 validateForm={formValidator}
-            />
+            /> */}
         </div>
     )
 }

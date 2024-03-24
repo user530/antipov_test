@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormItemProps } from './form-item/Form-item';
+import { Loader } from './loader/Loader';
 
 interface IFormContext {
     formValues: { [key: string]: any };
@@ -29,6 +30,8 @@ interface FormProviderProps {
 }
 
 export const FormProvider: React.FC<FormProviderProps> = ({ children, onSubmit, validateForm }) => {
+    const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
     // Prepare default object that stores all form input names with empty values
     const formItemsObj: { [key: string]: string } = {};
 
@@ -109,14 +112,24 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children, onSubmit, 
 
         // Submit if no errors
         if (Object.keys(errors).length === 0) {
+            setIsLoading(true);
+
             onSubmit(formValues)
-                // Handle errors during submit
+                .then(
+                    // Clear the form on success
+                    res => setFormValues(formItemsObj)
+                )
                 .catch(
+                    // Show response result at the bottom of the form on error
                     rej => {
                         const lastItemKey = Object.keys(formItemsObj).at(-1);
                         if (lastItemKey)
                             setFieldError(lastItemKey, (rej as Error).message || 'Something went wrong!');
                     }
+                )
+                .finally(
+                    // Toggle off loader
+                    () => setIsLoading(false)
                 )
         }
 
@@ -131,6 +144,10 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children, onSubmit, 
             setFieldError,
             clearFieldError
         }}>
-            {children}
+            {
+                isLoading
+                    ? <Loader />
+                    : <>{children}</>
+            }
         </FormContext.Provider >)
 }
