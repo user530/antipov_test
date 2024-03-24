@@ -3,9 +3,9 @@ import { Navigate } from 'react-router-dom';
 import { useAppSelector } from '../../app/store/useStore';
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-    const { userId } = useAppSelector(state => state.reducer.user);
+    const { userToken } = useAppSelector(state => state.reducer.user);
 
-    if (!userId)
+    if (!userToken)
         return <Navigate to='/' replace />
 
     return <>{children}</>;
