@@ -2,8 +2,13 @@ export interface PostLoginRes extends WithToken { }
 
 export interface PostRegisterRes extends WithToken, WithId { }
 
-export interface GetUsersRes extends WithPagination,
+export interface GetUsersRes extends
+    WithPagination,
     WithData<(WithId & WithEmail & WithName & WithAvatar)[]>,
+    WithSupport<WithUrlAndText> { }
+
+export interface GetUserRes extends
+    WithData<(WithId & WithEmail & WithName & WithAvatar)>,
     WithSupport<WithUrlAndText> { }
 
 export interface ErrorRes extends WithError { };
