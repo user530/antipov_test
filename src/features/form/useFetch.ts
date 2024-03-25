@@ -11,10 +11,10 @@ export const useFetch = () => {
     const fetcherRegister = makeFetcher<PostRegisterRes>();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-
+    const BASEURL = process.env.REACT_APP_API_BASE_URL || 'https://reqres.in/api';
     const submitRegistration = React.useCallback(
         async (formData: { [key: string]: string }) => {
-            const result = await fetcherRegister('https://reqres.in/api/register', formData);
+            const result = await fetcherRegister(`${BASEURL}/register`, formData);
 
             // Throw error for the form context to handle
             if (!result.success)
@@ -28,7 +28,7 @@ export const useFetch = () => {
 
     const submitSignup = React.useCallback(
         async (formData: { [key: string]: string }) => {
-            const result = await fetcherLogin('https://reqres.in/api/login', formData);
+            const result = await fetcherLogin(`${BASEURL}/login`, formData);
 
             // Throw error for the form context to handle
             if (!result.success)
