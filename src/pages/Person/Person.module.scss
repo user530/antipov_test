@@ -1,210 +1,6 @@
 @use '../../common.scss' as common;
 @use '../../typography.scss';
 
-.catalogue-wrapper {
-    height: 100%;
-}
-
-.catalogue-header {
-    width: 100%;
-    background-color: common.$violet;
-    padding-top: common.remy(32);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: common.remy(64) common.remy(16);
-    position: relative;
-}
-
-.header-buttons {
-    position: absolute;
-    top: 32px;
-    width: 100%;
-    max-width: common.remy(1312);
-    padding-inline: 16px;
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-
-    @media(max-width: 767px) {
-        top: 12px
-    }
-}
-
-.header-btn {
-    padding: 8px 16px;
-    border: 1px solid common.$white;
-    border-radius: 8px;
-    color: common.$white;
-
-    &:hover {
-        box-shadow: 0 0 15px rgba(255,255,255, 0.4) ;
-    }
-
-    @media (max-width: 767px) {
-        border: 1px dashed transparent;
-        border-radius: 0;
-        padding: 0;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        &:focus {
-            border-color: common.$white;
-        }
-
-        &:hover {
-
-        }
-    }
-}
-
-.header-content {
-    width: 100%;
-    text-align: center;
-    color: common.$white;
-}
-
-.header-heading {
-    @extend .h1;
-    margin-bottom: 16px;
-}
-
-.header-text {
-    width: 100%;
-
-    @extend .h2;
-    max-width: 846px;
-}
-
-.catalogue-body {
-    background-color: common.$white;
-    padding-top: 48px;
-    padding-bottom: 69px;
-
-    @media(max-width: 767px) {
-        padding-block: 32px;
-    }
-}
-
-.body-container {
-    max-width: 1350px;
-    padding-inline: 35px;
-    margin: 0 auto;
-}
-
-.cards-wrapper {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    margin-bottom: 56px;
-    
-    @media(max-width: 991px) {
-        grid-template-columns: repeat(3, 1fr);
-        margin-bottom: 44px;
-    }
-    
-    @media(max-width: 767px) {
-        margin: 0 auto;
-        max-width: 360px;
-        grid-template-columns: repeat(1, 1fr);
-        margin-bottom: 32px;
-    }
-}
-
-.card-item {
-    position: relative;
-}
-
-.card {
-    display: block;
-    cursor: pointer;
-    border-radius: 10px;
-    box-shadow: 0px 1px 4px 0px rgba(51, 51, 51, 0.15);
-    background: common.$white;
-    padding: 20px;
-    padding-top: 36px;
-    border: 1px solid transparent;
-    transition: 0.3s;
-
-    &:hover {
-        border-color: common.$black;
-    }
-}
-
-.card-content {
-    text-align: center;
-}
-
-.content-img {
-    width: 124px;
-    height: 124px;
-    margin: 0 auto;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-bottom: 16px;
-}
-
-.content-title {
-
-}
-
-.card-btn {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    right: 20px;
-    bottom: 20px;
-    z-index: 2;
-    border-radius: 4px;
-    background:common.$gray_light;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.buttons-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.body-btn {
-    padding: 8px 16px;
-    border: 1px solid common.$black;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    column-gap: 8px;
-
-    &:hover {
-        box-shadow: 0 0 15px rgba(0,0,0, 0.4) ;
-    }
-
-    &:focus .body-btn__icon {
-        border-color: common.$black;
-    }
-}
-
-.body-btn__txt {
-    @extend .text;
-}
-
-.body-btn__icon {
-    width: 24px;
-    height: 24px;
-    border: 1px dashed transparent;
-    transition: 0.3s;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .container {
     width: 100%;
     max-width: 1096px;
@@ -218,6 +14,11 @@
     column-gap: 32px;
     text-align: left;
 
+    @media(max-width: 1199px) {
+        width: fit-content;
+        margin: 0 auto;
+    }
+
     @media(max-width: 767px) {
         flex-direction: column-reverse;
         row-gap: 16px;
@@ -229,6 +30,14 @@
     flex-shrink: 0;
     overflow: hidden;
     border-radius: 50%;
+    width: 187px;
+    aspect-ratio: 1;
+    
+    & img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 }
 
 .header-info {}
