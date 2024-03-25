@@ -1,0 +1,79 @@
+@use '../../common.scss' as common;
+@use '../../typography.scss';
+
+.wrapper {
+    height: 100%;
+}
+
+.header {
+    width: 100%;
+    background-color: common.$violet;
+    padding-top: common.remy(32);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: common.remy(64) common.remy(16);
+    position: relative;
+}
+
+.header-buttons {
+    position: absolute;
+    top: 32px;
+    width: 100%;
+    max-width: common.remy(1312);
+    padding-inline: 16px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+
+    @media(max-width: 767px) {
+        top: 12px
+    }
+}
+
+.header-btn {
+    padding: 8px 16px;
+    border: 1px solid common.$white;
+    border-radius: 8px;
+    color: common.$white;
+
+    &:hover {
+        box-shadow: 0 0 15px rgba(255,255,255, 0.4) ;
+    }
+
+    @media (max-width: 767px) {
+        border: 1px dashed transparent;
+        border-radius: 0;
+        padding: 0;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:focus {
+            border-color: common.$white;
+        }
+
+        &:hover {
+
+        }
+    }
+}
+
+.header-content {
+    width: 100%;
+    text-align: center;
+    color: common.$white;
+}
+
+.body {
+    background-color: common.$white;
+    padding-top: 48px;
+    padding-bottom: 69px;
+
+    @media(max-width: 767px) {
+        padding-block: 32px;
+    }
+}
