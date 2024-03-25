@@ -39,7 +39,7 @@ export const useFetch = () => {
             localStorage.setItem('token', token);
 
             // Move to the main content
-            navigate('/catalogue');
+            navigate('/');
         },
         [fetcher, navigate, dispatch]
     );

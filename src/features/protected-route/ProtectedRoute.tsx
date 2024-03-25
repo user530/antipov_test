@@ -6,7 +6,7 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     const { userToken } = useAppSelector(state => state.reducer.user);
 
     if (!userToken)
-        return <Navigate to='/' replace />
+        return <Navigate to='/signup' replace />
 
     return <>{children}</>;
 }
