@@ -9,9 +9,10 @@ import { FaAngleLeft } from 'react-icons/fa'
 
 interface IMainTemplate {
     headerComponent?: React.ReactNode;
+    addBackBtn?: boolean;
 }
 
-export const MainTemplate: React.FC<PropsWithChildren<IMainTemplate>> = ({ headerComponent, children }) => {
+export const MainTemplate: React.FC<PropsWithChildren<IMainTemplate>> = ({ headerComponent, addBackBtn, children }) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
@@ -35,9 +36,15 @@ export const MainTemplate: React.FC<PropsWithChildren<IMainTemplate>> = ({ heade
                     <button className={styles['header-btn']} onClick={leaveBtnClickHandler}>
                         {isMobile ? <RiLogoutBoxRLine size={18} /> : 'Выход'}
                     </button>
-                    <button className={styles['header-btn']} onClick={backBtnClickHandler}>
-                        {isMobile ? <FaAngleLeft size={18} /> : 'Выход'}
-                    </button>
+                    {
+                        addBackBtn
+                            ? (
+                                <button className={styles['header-btn']} onClick={backBtnClickHandler}>
+                                    {isMobile ? <FaAngleLeft size={18} /> : 'Назад'}
+                                </button>
+                            )
+                            : null
+                    }
                 </div>
                 <div className={styles['header-content']}>
                     {headerComponent ? headerComponent : <h1>Another page</h1>}
