@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import styles from './Main.template.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../app/store/useStore';
 import { setUserId, setUserToken } from '../features/form/userSlice';
+import { useMediaQuery } from 'react-responsive';
+import { RiLogoutBoxRLine } from 'react-icons/ri';
+import { FaAngleLeft } from 'react-icons/fa'
 
 interface IMainTemplate {
-    headerComponent: React.ReactNode;
-    bodyComponent: React.ReactNode;
+    headerComponent?: React.ReactNode;
 }
 
-export const MainTemplate: React.FC<IMainTemplate> = ({ headerComponent, bodyComponent }) => {
+export const MainTemplate: React.FC<PropsWithChildren<IMainTemplate>> = ({ headerComponent, children }) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
 
     const leaveBtnClickHandler = () => {
         // Clear app store and local storage
@@ -29,16 +32,20 @@ export const MainTemplate: React.FC<IMainTemplate> = ({ headerComponent, bodyCom
         <div className={styles['wrapper']}>
             <div className={styles['header']}>
                 <div className={styles['header-buttons']}>
-                    <button className={styles['header-btn']} onClick={leaveBtnClickHandler}>Выход</button>
-                    <button className={styles['header-btn']} onClick={backBtnClickHandler}>Назад</button>
+                    <button className={styles['header-btn']} onClick={leaveBtnClickHandler}>
+                        {isMobile ? <RiLogoutBoxRLine size={18} /> : 'Выход'}
+                    </button>
+                    <button className={styles['header-btn']} onClick={backBtnClickHandler}>
+                        {isMobile ? <FaAngleLeft size={18} /> : 'Выход'}
+                    </button>
                 </div>
                 <div className={styles['header-content']}>
-                    {headerComponent}
+                    {headerComponent ? headerComponent : <h1>Another page</h1>}
                 </div>
             </div>
 
             <div className={styles['body']}>
-                {bodyComponent}
+                {children}
             </div>
         </div>
     )

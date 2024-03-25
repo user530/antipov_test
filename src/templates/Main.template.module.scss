@@ -1,5 +1,5 @@
-@use '../../common.scss' as common;
-@use '../../typography.scss';
+@use '../common.scss' as common;
+@use '../typography.scss';
 
 .wrapper {
     height: 100%;
@@ -19,16 +19,17 @@
 
 .header-buttons {
     position: absolute;
-    top: 32px;
+    top: common.remy(32);
     width: 100%;
-    max-width: common.remy(1312);
-    padding-inline: 16px;
+    max-width: common.remy(1350);
+    padding-inline: 35px;
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
 
     @media(max-width: 767px) {
-        top: 12px
+        padding-inline: 16px;
+        top: 12px;
     }
 }
 
