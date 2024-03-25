@@ -1,18 +1,20 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { makeFetcher } from '../../common/api';
-import { setUserId, setUserToken } from './userSlice';
+import { setUserToken } from './userSlice';
 import { useAppDispatch } from '../../app/store/useStore';
+import { PostLoginRes, PostRegisterRes } from '../../common/types'
+
 
 export const useFetch = () => {
-    const fetcher = makeFetcher();
+    const fetcherLogin = makeFetcher<PostLoginRes>();
+    const fetcherRegister = makeFetcher<PostRegisterRes>();
     const navigate = useNavigate();
-
     const dispatch = useAppDispatch();
 
     const submitRegistration = React.useCallback(
         async (formData: { [key: string]: string }) => {
-            const result = await fetcher('https://reqres.in/api/register', formData);
+            const result = await fetcherRegister('https://reqres.in/api/register', formData);
 
             // Throw error for the form context to handle
             if (!result.success)
@@ -21,12 +23,12 @@ export const useFetch = () => {
             // Redirect back to the login screen
             navigate(0);
         },
-        [fetcher, navigate]
+        [fetcherRegister, navigate]
     );
 
     const submitSignup = React.useCallback(
         async (formData: { [key: string]: string }) => {
-            const result = await fetcher('https://reqres.in/api/login', formData);
+            const result = await fetcherLogin('https://reqres.in/api/login', formData);
 
             // Throw error for the form context to handle
             if (!result.success)
@@ -41,7 +43,7 @@ export const useFetch = () => {
             // Move to the main content
             navigate('/');
         },
-        [fetcher, navigate, dispatch]
+        [fetcherLogin, navigate, dispatch]
     );
 
     return {
