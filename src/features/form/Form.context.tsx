@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormItemProps } from './form-item/Form-item';
-import { Loader } from './loader/Loader';
+import { Loader } from '../loader/Loader';
 
 interface IFormContext {
     formValues: { [key: string]: any };

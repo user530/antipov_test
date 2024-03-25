@@ -1,17 +1,16 @@
-type FetchResult = { success: true, data: any } | { success: false, error: string }
+type FetchResult<T> = { success: true, data: T } | { success: false, error: string }
 
-export function makeFetcher() {
+export function makeFetcher<T = never>() {
     // Prepare closure data that will be used across all fetch calls 
     let abortController = new AbortController();
-    const cache = new Map<string, FetchResult>();
+    const cache = new Map<string, FetchResult<T>>();
 
-    return async (url: string, requestBody?: any): Promise<FetchResult> => {
+    return async (url: string, requestBody?: any): Promise<FetchResult<T>> => {
 
         const cacheKey = url + JSON.stringify(requestBody);
 
         if (cache.has(cacheKey))
             return cache.get(cacheKey)!;
-
 
         // Abort previous fetch call and prepare new one
         abortController.abort();
@@ -29,7 +28,7 @@ export function makeFetcher() {
             if (!response.ok)
                 throw new Error(`Fetch failed! Error ${response.status}. ${(await response.json()).error}`);
 
-            const responseData = await response.json();
+            const responseData: T = await response.json();
             const result = { success: true as const, data: responseData };
 
             // Cache the result
@@ -37,14 +36,12 @@ export function makeFetcher() {
 
             return result;
         } catch (error) {
-            const err = error instanceof Error ? error : { name: 'Undefined fetch error', message: 'Something went wrong during fetch...' }
-            // Only log abort errors
-            if (err.name === 'AbortError') {
-                console.error('Fetch has been aborted!');
-                return { success: false, error: err.message }
-            }
-            else
-                return { success: false, error: err.message }
+            const err = error instanceof Error
+                ? error
+                : { name: 'Undefined fetch error', message: 'Something went wrong during fetch...' };
+
+            console.error('Fetch has been aborted!');
+            return { success: false, error: err.message }
         }
     }
 }
