@@ -1,4 +1,5 @@
-type FetchResult<T> = { success: true, data: T } | { success: false, error: string }
+import { CustomError } from '../common/types';
+type FetchResult<T> = { success: true, data: T } | { success: false, error: string, status: number }
 
 export function makeFetcher<T = never>() {
     // Prepare closure data that will be used across all fetch calls 
@@ -26,7 +27,7 @@ export function makeFetcher<T = never>() {
             });
 
             if (!response.ok)
-                throw new Error(`Fetch failed! Error ${response.status}. ${(await response.json()).error}`);
+                throw new CustomError(`Fetch failed: ${(await response.json()).error || 'Unrecongnized error'}`, response.status);
 
             const responseData: T = await response.json();
             const result = { success: true as const, data: responseData };
@@ -36,12 +37,11 @@ export function makeFetcher<T = never>() {
 
             return result;
         } catch (error) {
-            const err = error instanceof Error
+            const err = error instanceof CustomError
                 ? error
-                : { name: 'Undefined fetch error', message: 'Something went wrong during fetch...' };
+                : { name: 'Undefined fetch error', message: 'Something went wrong during fetch...', status: 500 };
 
-            console.error('Fetch has been aborted!');
-            return { success: false, error: err.message }
+            return { success: false, error: err.message, status: err.status }
         }
     }
 }
